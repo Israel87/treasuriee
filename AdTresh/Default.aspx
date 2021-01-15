@@ -1,42 +1,34 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="AdTresh._Default" %>
+﻿<%@ Page Title="treasuriee" Language="C#" MasterPageFile="~/Landing.master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="AdTresh._Default" %>
 
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+     
+<asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+            <div class="logo">  
+                <div class="font-icon-detail" style="font-size: 35px; color:white">
+                    <i class="pe-7s-graph3" style="color: black; font-weight:900"></i><p style="margin-top: -20px"> treasuriee </p>
+                </div>
+            </div>
+  
+
+   <%-- <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus runat="server"><br />--%>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control text-center" placeholder="Enter Password" required runat="server">
+      
+
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me">
+            Remember me
+   
+        </label>
+
     </div>
+<%--    <asp:Button ID="submit" runat="server" OnClick="submit_Click" Text="Button" />--%>
+    <asp:LinkButton CssClass="btn btn-info btn-block" ID="submit" OnClick="submit_Click" runat="server"><strong>Sign in</strong></asp:LinkButton>
 
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-            A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>
-                NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>
-                You can easily find a web hosting company that offers the right mix of features and price for your applications.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-            </p>
-        </div>
-    </div>
-
+    <%--<button class="btn btn-lg btn-info btn-block" type="submit" runat="server" onclick="btnLogin_Click()">Sign in</button>--%>
+    <p class="mt-5 mb-3 text-muted">&copy; <script>document.write(new Date().getFullYear())</script> </p>
+               
 </asp:Content>
+

@@ -1,0 +1,55 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Landing.master.cs" Inherits="AdTresh.Landing" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+
+    <link href="assets/css/bootswatch.css" rel="stylesheet" />
+    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link href="Content/signin.css" rel="stylesheet" />
+    <script src="assets/js/sweetalert.js"></script>
+    <script>
+        function loginAlert() {
+            swal({
+                title: "Login failed!",
+                text: "Invalid Username or Password !",
+                icon: "error",
+            });
+        };
+
+        
+
+    </script>
+</head>
+
+<body class="text-center" style="background-color: #ddd">
+    <form runat="server" class="form-signin">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+
+</html>

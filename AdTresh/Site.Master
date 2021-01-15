@@ -6,17 +6,53 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %> - treasuriee </title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    <%-- <webopt:bundlereference runat="server" path="~/Content/css" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="assets/css/bootswatch.css" rel="stylesheet" />
+    <link href="Content/dashboard.css" rel="stylesheet" />
+    <link href="assets/css/treasuriee.css" rel="stylesheet" />
+    <script src="assets/js/sweetalert.js"></script>
+    <script src="assets/js/userNotifications.js"></script>
 
 </head>
 <body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-2 col-lg-2 mr-0 px-3 pl-5" href="#">treasuriee</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="btn btn-danger btn-block" style="width: 300px" href="Logout.aspx">Log Out</a>
+
+            </li>
+
+        </ul>
+    </nav>
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -38,34 +74,157 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" runat="server" href="~/">Application name</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
+
+
+        <div class="container body-content">
+            <div class="row">
+                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                    <div class="sidebar-sticky p-5">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="Dashboard.aspx">
+                                    <span data-feather="home"></span>
+                                    Dashboard <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Transactions.aspx">
+                                    <span data-feather="file"></span>
+                                    Income
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Members.aspx">
+                                    <span data-feather="shopping-cart"></span>
+                                    Members
+                                </a>
+                            </li>
+
+                            <%-- <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                  <span data-feather="bar-chart-2"></span>
+                                  Reports
+                                </a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                  <span data-feather="layers"></span>
+                                  Integrations
+                                </a>
+                              </li>--%>
+                        </ul>
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 pt-5 text-muted">
+                            <span>Expenses</span>
+                            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                                <span data-feather="plus-circle"></span>
+                            </a>
+                        </h6>
+                        <ul class="nav flex-column mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="users" style="color: black"></span>
+                                    Manage
+                                </a>
+                            </li>
+                        </ul>
+
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 pt-5 text-muted">
+                            <span>Financial Reports</span>
+                            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                                <span data-feather="plus-circle"></span>
+                            </a>
+                        </h6>
+                        <ul class="nav flex-column mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link" href="Reports.aspx">
+                                    <span data-feather="users"></span>
+                                    Aggregated 
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="file-text"></span>
+                                    Personalized
+                                </a>
+                            </li>
+
+                            <%-- <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                  <span data-feather="file-text"></span>
+                                  Social engagement
+                                </a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                  <span data-feather="file-text"></span>
+                                  Year-end sale
+                                </a>
+                              </li>--%>
+                        </ul>
+
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 pt-5 text-muted">
+                            <span id="datetime" style="color: teal; font-size: 15px; font-weight: 600"></span>
+                        </h6>
+
+
+                        <ul class="nav flex-column pt-5">
+
+                            <%--<li class="nav-item">
+                                <a class="nav-link btn btn-outline-danger" href="Logout.aspx" >
+                                   <b> Log out</b>
+                                </a>
+                            </li>--%>
+
+                            <%-- <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                  <span data-feather="file-text"></span>
+                                  Social engagement
+                                </a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                  <span data-feather="file-text"></span>
+                                  Year-end sale
+                                </a>
+                              </li>--%>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div class="col-md-9 ml-sm-auto col-lg-10 px-lg-4 pt-5">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                    <hr />
+                    <footer>
+
+                        <p class="float-right" style="font-size: 8px; font-weight: 500; color: teal">
+                            &copy;
+                            <script>
+                                document.write(new Date().getFullYear())
+
+
+                            </script>
+                            <a href="#" style="color: teal; text-decoration: none">For Seventh Day Adventist Church, Festac Treasury Department.</a>
+                        </p>
+                    </footer>
                 </div>
             </div>
         </div>
-        <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
-            </footer>
-        </div>
-
     </form>
+    <script>
+        setInterval(function () {
+            var d = new Date();
+            //d.setUTCHours(0);
+            document.getElementById("datetime").innerHTML = d.toString().slice(0, 28);
+        }, 1000);
+
+    </script>
+
+    <script src="assets/js/jquery.3.2.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/adtresh.js"></script>
+    <script src="assets/js/light-bootstrap-dashboard.js"></script>
+
+
 </body>
 </html>

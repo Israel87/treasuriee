@@ -11,7 +11,8 @@ namespace AdTresh
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            //DateTime _activeDate = DateTime.Now;
+            //currentDateTime.Text = _activeDate.ToString();
         }
     }
 }

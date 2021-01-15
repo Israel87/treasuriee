@@ -13,6 +13,12 @@ namespace AdTresh
             var settings = new FriendlyUrlSettings();
             settings.AutoRedirectMode = RedirectMode.Permanent;
             routes.EnableFriendlyUrls(settings);
+
+
+          
+            //var settings = new FriendlyUrlSettings();
+            //settings.AutoRedirectMode = RedirectMode.Off;
+            //routes.EnableFriendlyUrls(settings);
         }
     }
 }
