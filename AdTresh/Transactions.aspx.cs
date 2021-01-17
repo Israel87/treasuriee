@@ -143,7 +143,9 @@ namespace AdTresh
             var amountX = Convert.ToInt32(amount.Value);
             var transactionDetails = remark.Value;
 
-
+            // Select * from tblTransactionsReceiptsCards where paymentdate and membership Id matches the requirements.
+            // if available, update the particular row by ReceiptNo.
+            // else save afresh.
 
             // automatically prepopulate the form view 
             using (OleDbConnection conn = new OleDbConnection(connection))
@@ -152,9 +154,6 @@ namespace AdTresh
                 // use the back tick to wrap field names that has spaces such as Church Expense Offering.
                 string queryReceiptCards = "INSERT INTO [tblTransactionsReceiptsCards](PaymentDate, EntryDate, MembershipID,Tithe, `Church Expense Offering`)" +
                     "VALUES(@PaymentDate, @EntryDate, @MembershipID, @Tithe, `@Church Expense Offering`)";
-                //string queryReceiptOthers = "INSERT INTO [tblTransactionReceiptOthers](PaymentDate, EntryDate, MembershipID,Tithe, Church Expense Offering)" +
-                //  "VALUES(@paymentDate, @entryDate, @membershipID, @titheX, @offeringX)";
-
 
                 string getIdQuery = "Select @@Identity";
                 int id;
@@ -306,22 +305,32 @@ namespace AdTresh
         {
             DataTable dt3 = new DataTable();
             OleDbDataAdapter da = null;
-
+       
             using (OleDbConnection conn = new OleDbConnection(connection))
             {
                 try
                 {
 
-                    da = new OleDbDataAdapter($"SELECT * FROM [tblTransactionsReceiptsOthers] WHERE PaymentDate=" + Convert.ToDateTime(_date).ToString("dd-MM-yyyy") + "" +
-                                                  " AND MembershipID=" + Convert.ToInt32(_memberId) + "", conn);
+                    da = new OleDbDataAdapter($"SELECT * FROM [tblTransactionsReceiptsOthers] WHERE MembershipID=" + Convert.ToInt32(_memberId) + "", conn);
 
                     da.Fill(dt3);
                     if (dt3.Rows.Count > 0)
                     {
-                        paymenttype.Value = dt3.Rows[0]["PaymentType"].ToString();
-                        remark.Value = dt3.Rows[0]["TransactionDetails"].ToString();
+                       
+                        foreach (DataRow row in dt3.Rows)
+                        {
+                            var _paymentDate = Convert.ToDateTime(row["PaymentDate"].ToString()).ToString("dd-MM-yyyy");
+                            if (_paymentDate == Convert.ToDateTime(_date).ToString("dd-MM-yyyy"))
+                            {
+                                paymenttype.Value = row["PaymentType"].ToString();
+                                remark.Value = row["TransactionDetails"].ToString();
+                                break;
+                                
+                            }
+                        }
 
                     }
+                       
                 }
                 catch (Exception ex)
                 {
