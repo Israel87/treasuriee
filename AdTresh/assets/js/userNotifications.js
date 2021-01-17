@@ -30,4 +30,12 @@ function memberError() {
     });
 }
 
+function noRecord() {
+    swal({
+        title: "Warning !",
+        text: "No Regular / Other Offering record found !",
+        icon: "warning",
+    });
+}
+
 
