@@ -38,4 +38,12 @@ function noRecord() {
     });
 }
 
+function noRecordII() {
+    swal({
+        title: "Warning !",
+        text: "No record found !",
+        icon: "warning",
+    });
+}
+
 
