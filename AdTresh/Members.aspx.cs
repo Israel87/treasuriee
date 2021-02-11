@@ -11,6 +11,9 @@ namespace AdTresh
         string connection = DbConnection.ConnectionII();
         protected void Page_Load(object sender, EventArgs e)
         {
+            OleDbDataAdapter da = null;
+            DataTable dt = new DataTable();
+
             if (Session["SessionID"] == null)
             {
                 Response.Redirect("Default.aspx");
@@ -19,9 +22,53 @@ namespace AdTresh
             var SessionID = Convert.ToInt32(Session["SessionID"].ToString());
             // register User Activity
             UserActivity.CaptureActivity(SessionID, DateTime.Now, "Member Page", "Visited/Page Reload");
-        }
 
-        protected void saveTransaction_Click(object sender, EventArgs e)
+
+            // Auto populate the member details here.
+            using (OleDbConnection conn = new OleDbConnection(connection))
+            {
+
+                try
+                {
+                    // using the integer SQL Query here with the removal of some quotes to represent integer MembershipID.
+                    da = new OleDbDataAdapter($"SELECT * FROM [tblMembershipMembers] ", conn);
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        string html = ""; 
+
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            var _sex = item["Sex"].ToString() == "1" ? "Male" : "Female";
+
+                            html += "<td>" + item["MembershipID"] + "</td><td>" + item["FirstName"] + "</td><td>" + item["SurName"] + "</td><td>" + _sex + "</td></tr>";
+                            t_body.InnerHtml = html;
+                        }
+
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+
+
+            }
+
+
+          
+
+              
+
+
+            }
+
+            protected void saveTransaction_Click(object sender, EventArgs e)
         {
             var _surname = surname.Value;
             var _sex = sex.Value;
