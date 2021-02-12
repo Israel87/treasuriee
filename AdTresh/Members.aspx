@@ -102,18 +102,12 @@
         </table>
         <nav aria-label="...">
             <ul class="pagination">
-                <li class="page-item disabled">
-                    <span class="page-link">Previous</span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-                    <span class="page-link">2
-        <span class="sr-only">(current)</span>
-                    </span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <asp:LinkButton CssClass="btn btn-info" ID="Previous" runat="server" Width="200" OnClick="Previous_Click"> <b>Prev</b></asp:LinkButton>
+                </li>
+             
+                <li class="page-item active">
+                     <asp:LinkButton CssClass="btn btn-info" ID="Next" runat="server" Width="200" OnClick="Next_Click"> <b>Next</b></asp:LinkButton>
                 </li>
             </ul>
         </nav>

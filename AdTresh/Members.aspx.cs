@@ -8,67 +8,70 @@ namespace AdTresh
 {
     public partial class Members : System.Web.UI.Page
     {
-        string connection = DbConnection.ConnectionII();
+        private string connection = DbConnection.ConnectionII();
+        private int pageSize = 5;
+        //private int lastRecord = 0;
+
+        OleDbDataAdapter da = null;
+        DataTable dt = new DataTable();
+        DataSet dataSet = new DataSet();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            OleDbDataAdapter da = null;
-            DataTable dt = new DataTable();
-
-            if (Session["SessionID"] == null)
+            if (!IsPostBack)
             {
-                Response.Redirect("Default.aspx");
-            }
-            // get Session ID and register user activity
-            var SessionID = Convert.ToInt32(Session["SessionID"].ToString());
-            // register User Activity
-            UserActivity.CaptureActivity(SessionID, DateTime.Now, "Member Page", "Visited/Page Reload");
-
-
-            // Auto populate the member details here.
-            using (OleDbConnection conn = new OleDbConnection(connection))
-            {
-
-                try
+                if (Session["SessionID"] == null)
                 {
-                    // using the integer SQL Query here with the removal of some quotes to represent integer MembershipID.
-                    da = new OleDbDataAdapter($"SELECT * FROM [tblMembershipMembers] ", conn);
-                    da.Fill(dt);
+                    Response.Redirect("Default.aspx");
+                }
+                // get Session ID and register user activity
+                var SessionID = Convert.ToInt32(Session["SessionID"].ToString());
+                // register User Activity
+                UserActivity.CaptureActivity(SessionID, DateTime.Now, "Member Page", "Visited/Page Reload");
 
-                    if (dt.Rows.Count > 0)
+
+                // Auto populate the member details here.
+                using (OleDbConnection conn = new OleDbConnection(connection))
+                {
+
+                    try
                     {
-                        string html = ""; 
 
-                        foreach (DataRow item in dt.Rows)
+                        da = new OleDbDataAdapter($"SELECT TOP " + pageSize + " * FROM [tblMembershipMembers]  ORDER BY MembershipID ", conn);
+
+                        da.Fill(dataSet, "Members");
+                        var lastRecord = Convert.ToInt32(dataSet.Tables["Members"].Rows[pageSize - 1]["MembershipID"].ToString());
+                        Session["LastRecord"] = lastRecord;
+
+                        if (dataSet.Tables["Members"].Rows.Count > 0)
                         {
-                            var _sex = item["Sex"].ToString() == "1" ? "Male" : "Female";
+                            string html = "";
+                            foreach (DataRow item in dataSet.Tables["Members"].Rows)
+                            {
+                                var _sex = item["Sex"].ToString() == "1" ? "Male" : "Female";
+                                html += "<td>" + item["MembershipID"] + "</td><td>" + item["FirstName"] + "</td><td>" + item["SurName"] + "</td><td>" + _sex + "</td></tr>";
+                                t_body.InnerHtml = html;
+                            }
 
-                            html += "<td>" + item["MembershipID"] + "</td><td>" + item["FirstName"] + "</td><td>" + item["SurName"] + "</td><td>" + _sex + "</td></tr>";
-                            t_body.InnerHtml = html;
+                        }
+                        else
+                        {
+                            t_body.InnerHtml = "No record found.";
                         }
 
                     }
+                    catch (Exception)
+                    {
 
-
-
-                }
-                catch (Exception ex)
-                {
+                    }
 
                 }
-
-
-
             }
-
-
           
 
-              
+        }
 
-
-            }
-
-            protected void saveTransaction_Click(object sender, EventArgs e)
+        protected void saveTransaction_Click(object sender, EventArgs e)
         {
             var _surname = surname.Value;
             var _sex = sex.Value;
@@ -96,7 +99,7 @@ namespace AdTresh
                         {
                             while (_value.Read())
                             {
-                                 result  = _value[0].ToString();
+                                result = _value[0].ToString();
                             }
                         }
 
@@ -117,7 +120,7 @@ namespace AdTresh
                         cmd.Parameters.AddWithValue("@SurName", _surname);
                         cmd.Parameters.AddWithValue("@FirstName", _firstname);
                         cmd.Parameters.AddWithValue("@OtherNames", _othernames);
-                        cmd.Parameters.AddWithValue("@Sex",Convert.ToByte(_sex));
+                        cmd.Parameters.AddWithValue("@Sex", Convert.ToByte(_sex));
                         cmd.Parameters.AddWithValue("@MaritalStatus", Convert.ToByte(_maritalstatus));
                         cmd.Parameters.AddWithValue("@eMail", _email);
                         cmd.Parameters.AddWithValue("@ResidentialAddress", _residentialaddress);
@@ -157,6 +160,98 @@ namespace AdTresh
             email.Value = "";
             othernames.Value = "";
             residentialaddress.Value = "";
+        }
+
+        protected void Previous_Click(object sender, EventArgs e)
+        {
+            string html = "";
+            string _norecord = "No Record";
+
+            using (OleDbConnection conn = new OleDbConnection(connection))
+            {
+
+                try
+                {
+                    var _lastRecord = Session["lastRecord"];
+                    da = new OleDbDataAdapter($"SELECT TOP " + pageSize + " * FROM [tblMembershipMembers] WHERE MembershipID < " + _lastRecord + " ORDER BY MembershipID DESC", conn);
+                   // dataSet.Tables["Members"].Rows.Clear();
+                    da.Fill(dataSet, "Members");
+                    Session.Remove("LastRecord");
+                    // var lastRecord = Convert.ToInt32(dataSet.Tables["Members"].Rows[pageSize - 1]["MembershipID"].ToString());
+                    var lastRecord = Convert.ToInt32(_lastRecord) - pageSize;
+                    Session["LastRecord"] = lastRecord;
+
+                    if (dataSet.Tables["Members"].Rows.Count > 0)
+                    {
+                    
+                        foreach (DataRow item in dataSet.Tables["Members"].Rows)
+                        {
+                            var _sex = item["Sex"].ToString() == "1" ? "Male" : "Female";
+                            html += "<td>" + item["MembershipID"] + "</td><td>" + item["FirstName"] + "</td><td>" + item["SurName"] + "</td><td>" + _sex + "</td></tr>";
+                            t_body.InnerHtml = html;
+                        }
+
+                    }
+                    else
+                    {
+                        html += "<td>" + _norecord + "</td></tr>";
+                        t_body.InnerHtml = "No record found.";
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+        }
+
+        protected void Next_Click(object sender, EventArgs e)
+        {
+       
+
+            using (OleDbConnection conn = new OleDbConnection(connection))
+            {
+
+                try
+                {
+                    var _lastRecord = Session["LastRecord"];
+                    da = new OleDbDataAdapter($"SELECT TOP " + pageSize + " * FROM [tblMembershipMembers] WHERE MembershipID > " + _lastRecord + " ORDER BY MembershipID", conn);
+                   // dataSet.Tables["Members"].Rows.Clear();
+                    da.Fill(dataSet, "Members");
+                    Session.Remove("LastRecord");
+                    
+                    var lastRecord = Convert.ToInt32(dataSet.Tables["Members"].Rows[pageSize - 1]["MembershipID"].ToString());
+               
+                    Session["LastRecord"] = lastRecord;
+
+
+                    if (dataSet.Tables["Members"].Rows.Count > 0)
+                    {
+                        string html = "";
+                        foreach (DataRow item in dataSet.Tables["Members"].Rows)
+                        {
+                            var _sex = item["Sex"].ToString() == "1" ? "Male" : "Female";
+                            html += "<td>" + item["MembershipID"] + "</td><td>" + item["FirstName"] + "</td><td>" + item["SurName"] + "</td><td>" + _sex + "</td></tr>";
+                            t_body.InnerHtml = html;
+                        }
+
+                    }
+                    else
+                    {
+                        t_body.InnerHtml = "No record found.";
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
         }
     }
 }
