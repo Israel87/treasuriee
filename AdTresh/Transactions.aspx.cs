@@ -139,9 +139,9 @@ namespace AdTresh
             var membershipID = Convert.ToInt32(memId.Value);
             var titheX = Convert.ToInt32(tithe.Value);
             var offeringX = offering.Value != "" ? Convert.ToInt32(offering.Value) : 0;
-            var account = 1000;
+            var account = 10000;
             var paymentType = paymenttype.Value;
-            var amountX = Convert.ToInt32(amount.Value);
+            var amountX = amount.Value != "" ? Convert.ToInt32(amount.Value) : 0;
             var transactionDetails = remark.Value;
 
             // Select * from tblTransactionsReceiptsCards where paymentdate and membership Id matches the requirements.
@@ -160,6 +160,7 @@ namespace AdTresh
                         try
                         {
                             cmd.ExecuteNonQuery();
+
                         }
                         catch (Exception ex)
                         {
@@ -186,6 +187,9 @@ namespace AdTresh
                             }
                         }
                     }
+
+                    ClientScript.RegisterStartupScript(this.GetType(), "transaction", "transactionUpdate()", true);
+                   
 
                 }
 
@@ -220,9 +224,9 @@ namespace AdTresh
                             conn.Close();
 
                             // record the other offerings.
-                            if (amountX != 0)
-                            {
-                                // insert into tblTransactionReceiptsOthers
+                            //if (amountX != 0)
+                            //{
+                            //    // insert into tblTransactionReceiptsOthers
                                 string queryReceiptOthers = "INSERT INTO [tblTransactionsReceiptsOthers](MembershipID,ReceiptNo, " +
                                     "PaymentDate, EntryDate,Account, Amount, PaymentType, TransactionDetails)" +
                                     "VALUES(@MembershipID, @ReceiptNo, @PaymentDate, @EntryDate, @Account, @Amount, @PaymentType, @TransactionDetails)";
@@ -256,14 +260,14 @@ namespace AdTresh
                                     }
                                 }
 
-                            }
-                            else
-                            {
-                                ClientScript.RegisterStartupScript(this.GetType(), "createdone", "accountCreatedone()", true);
+                            //}
+                            //else
+                            //{
+                            //    ClientScript.RegisterStartupScript(this.GetType(), "createdone", "accountCreatedone()", true);
 
-                                // Clear all input fields.
-                                ClearInputFields();
-                            }
+                            //    // Clear all input fields.
+                            //    ClearInputFields();
+                            //}
 
                         }
                         catch (Exception ex)

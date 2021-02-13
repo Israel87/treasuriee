@@ -46,6 +46,16 @@ function noRecordII() {
     });
 }
 
+function transactionUpdate() {
+    swal({
+        title: "Success !",
+        text: "Record Updated Successfully",
+        icon: "Success"
+    });
+}
+
+
+
 
 function MyFilter(tablename, inputname) {
     var input, filter, table, tr, td, i, txtValue;

@@ -76,10 +76,10 @@
     </div>
     <div id="showmembertable">
         <p class="" style="font-weight: 700">
+               
             View Members List
-            <br />
-        </p>
-        <br />
+           </p>
+  
       
         <table class="table table-striped table-hover" id="searchtable">
             <thead>
