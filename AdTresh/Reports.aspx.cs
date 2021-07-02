@@ -75,7 +75,7 @@ namespace AdTresh
                     if (!string.IsNullOrEmpty(_weeklySummary))
                     {
                         da = new OleDbDataAdapter($"SELECT * FROM [qryPrintSummary_Crosstab] WHERE PaymentDate='" 
-                            + Convert.ToDateTime(_weeklySummary).ToString("dd-MM-yyyy") + "'", conn);
+                            + Convert.ToDateTime(_weeklySummary).ToString("dd/MM/yyyy") + "'", conn);
 
                         da.Fill(dt);
                         ReportDocument rpt = new ReportDocument();
@@ -88,7 +88,7 @@ namespace AdTresh
                     else if(!string.IsNullOrEmpty(_simpleSummary))
                     {
                         da = new OleDbDataAdapter($"SELECT * FROM [qryPrintSummary_Crosstab] WHERE PaymentDate='" 
-                            + Convert.ToDateTime(_simpleSummary).ToString("dd-MM-yyyy") + "'", conn);
+                            + Convert.ToDateTime(_simpleSummary).ToString("dd/MM/yyyy") + "'", conn);
 
                         da.Fill(dt);
                         ReportDocument rpt = new ReportDocument();
@@ -104,7 +104,7 @@ namespace AdTresh
                         var _monthlyReport = month.Value.ToString();
                         var _yearlyReport = Convert.ToInt32(year.Value);
 
-                        da = new OleDbDataAdapter($"SELECT * FROM [qryPrintSummary_Crosstab] WHERE PmtMonthName='" 
+                        da = new OleDbDataAdapter($"SELECT * FROM [qryPrintSummary_Crosstab] WHERE PmtMonthName='"
                             + _monthlyReport + "' AND mYear= " + _yearlyReport + "", conn);
 
                         da.Fill(dt);
